@@ -1,5 +1,5 @@
 $.ajax({
-    'url': 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt',
+    'url': '//data.iana.org/TLD/tlds-alpha-by-domain.txt',
     'dataType': 'plain'
 }).always((data, a, b) => {
     // console.log(data.responseText);
