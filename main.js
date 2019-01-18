@@ -1,23 +1,44 @@
-jQuery(document).ready(function($){
-
-$('.live-search-list li').each(function(){
-$(this).attr('data-search-term', $(this).text().toLowerCase());
+$.ajax({
+    'url': 'http://data.iana.org/TLD/tlds-alpha-by-domain.txt',
+    'dataType': 'plain'
+}).always((data, a, b) => {
+    // console.log(data.responseText);
+    setList(data.responseText);
+    setupSearch();
 });
 
-$('.live-search-box').on('keyup', function(){
+function setList(requestText) {
+    var tlds = requestText.split('\n');
+    tlds.shift();
 
-var searchTerm = $(this).val().toLowerCase();
+    fragment = document.createDocumentFragment();
+    for (let tld of tlds) {
+        // name = name.toLowerCase();
+        const li = document.createElement('li');
+        li.textContent = tld;
+        fragment.appendChild(li);
+    }
 
-    $('.live-search-list li').each(function(){
+    const container = document.getElementById('live-search-list');
+    container.appendChild(fragment);
+}
 
-        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
-
+function setupSearch() {
+    $('.live-search-list li').each(function () {
+        $(this).attr('data-search-term', $(this).text().toLowerCase());
     });
 
-});
+    $('.live-search-box').on('keyup', function () {
+        var searchTerm = $(this).val().toLowerCase();
 
-});
+        $('.live-search-list li').each(function () {
+            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+
+        });
+
+    });
+}
