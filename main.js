@@ -45,5 +45,5 @@ function setupSearch() {
                 elem.hide();
             }
         });
-    });
+    }).keyup();
 }
